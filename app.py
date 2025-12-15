@@ -28,32 +28,33 @@ class ImageClassifierApp:
     
     def setup_ui(self):
         # Header
-        header_frame = ctk.CTkFrame(self.root, fg_color="#E8E8E8", height=80)
+        header_frame = ctk.CTkFrame(self.root, fg_color="#FFFFFF", height=80)
         header_frame.pack(fill="x", padx=0, pady=0)
         header_frame.pack_propagate(False)
         
         # Icon and Title
         title_label = ctk.CTkLabel(
             header_frame, 
-            text="🖼️ Image Classifier", 
-            font=ctk.CTkFont(size=24, weight="bold"),
-            text_color="#000000"
+            text="Image Classifier", 
+            font=ctk.CTkFont(size=28, weight="bold"),
+            text_color="#235789"
         )
-        title_label.pack(side="left", padx=20, pady=20)
+        title_label.pack(side="left", padx=30, pady=20)
         
         # Action Buttons
         btn_frame = ctk.CTkFrame(header_frame, fg_color="transparent")
-        btn_frame.pack(side="right", padx=20, pady=20)
+        btn_frame.pack(side="right", padx=30, pady=20)
         
         self.upload_btn = ctk.CTkButton(
             btn_frame,
-            text="📁 Upload Image",
+            text="📤 Upload Image",
             command=self.upload_image,
             width=140,
             height=36,
-            corner_radius=8,
-            fg_color="#4A9EFF",
-            hover_color="#3A8EEF"
+            corner_radius=30,
+            fg_color="#235789",
+            hover_color="#1A4669",
+            font=ctk.CTkFont(family="Inter", size=18, weight="bold")
         )
         self.upload_btn.pack(side="left", padx=5)
         
@@ -63,112 +64,138 @@ class ImageClassifierApp:
             command=self.save_image,
             width=140,
             height=36,
-            corner_radius=8,
-            fg_color="#4A9EFF",
-            hover_color="#3A8EEF"
+            corner_radius=30,
+            fg_color="#235789",
+            hover_color="#1A4669",
+            font=ctk.CTkFont(family="Inter", size=18, weight="bold")
         )
         self.save_btn.pack(side="left", padx=5)
         
         self.reset_btn = ctk.CTkButton(
             btn_frame,
-            text="🔄 Reset",
+            text="↻ Reset",
             command=self.reset,
             width=100,
             height=36,
-            corner_radius=8,
-            fg_color="#4A9EFF",
-            hover_color="#3A8EEF"
+            corner_radius=30,
+            fg_color="#235789",
+            hover_color="#1A4669",
+            font=ctk.CTkFont(family="Inter", size=18, weight="bold")
         )
         self.reset_btn.pack(side="left", padx=5)
         
-        # Main Content Area
-        content_frame = ctk.CTkFrame(self.root, fg_color="#F5F5F5")
-        content_frame.pack(fill="both", expand=True, padx=20, pady=20)
+        # Main Content Area with scrolling
+        scrollable_frame = ctk.CTkScrollableFrame(self.root, fg_color="#F5F5F5")
+        scrollable_frame.pack(fill="both", expand=True, padx=30, pady=20)
+        
+        # Content wrapper frame for horizontal layout
+        content_frame = ctk.CTkFrame(scrollable_frame, fg_color="#F5F5F5")
+        content_frame.pack(fill="both", expand=True)
         
         # Left Panel - Images
         left_panel = ctk.CTkFrame(content_frame, fg_color="transparent")
         left_panel.pack(side="left", fill="both", expand=True, padx=(0, 10))
         
         # Original Image
-        orig_frame = ctk.CTkFrame(left_panel, fg_color="#FFFFFF", corner_radius=12)
+        orig_frame = ctk.CTkFrame(left_panel, fg_color="#FFFFFF", corner_radius=30)
         orig_frame.pack(fill="both", expand=True, pady=(0, 10))
         
         orig_label = ctk.CTkLabel(
             orig_frame,
-            text="🖼️ Original Image",
+            text="🎨 Original Image",
             font=ctk.CTkFont(size=16, weight="bold"),
-            text_color="#000000"
+            text_color="#235789"
         )
         orig_label.pack(anchor="w", padx=15, pady=(10, 5))
         
+        # Canvas wrapper with rounded corners
+        orig_canvas_frame = ctk.CTkFrame(orig_frame, fg_color="#E8E8E8", corner_radius=30)
+        orig_canvas_frame.pack(padx=15, pady=(5, 2), fill="both", expand=True)
+        
         self.orig_canvas = ctk.CTkCanvas(
-            orig_frame,
+            orig_canvas_frame,
             width=650,
             height=280,
             bg="#E8E8E8",
             highlightthickness=0
         )
-        self.orig_canvas.pack(padx=15, pady=(5, 10), fill="both", expand=True)
+        self.orig_canvas.pack(fill="both", expand=True)
+        
+        # Button frame to ensure consistent sizing
+        orig_btn_frame = ctk.CTkFrame(orig_frame, fg_color="transparent", height=45)
+        orig_btn_frame.pack(fill="x", padx=15, pady=(5, 15))
+        orig_btn_frame.pack_propagate(False)
         
         self.show_orig_hist_btn = ctk.CTkButton(
-            orig_frame,
+            orig_btn_frame,
             text="📊 Show Original Histogram",
             command=self.show_original_histogram,
-            width=200,
-            height=32,
-            corner_radius=8,
-            fg_color="#4A9EFF",
-            hover_color="#3A8EEF"
+            width=280,
+            height=40,
+            corner_radius=30,
+            fg_color="#235789",
+            hover_color="#1A4669",
+            font=ctk.CTkFont(family="Inter", size=16, weight="bold")
         )
-        self.show_orig_hist_btn.pack(pady=(5, 15))
+        self.show_orig_hist_btn.pack(side="right", pady=2)
         
         # Equalized Image
-        eq_frame = ctk.CTkFrame(left_panel, fg_color="#FFFFFF", corner_radius=12)
+        eq_frame = ctk.CTkFrame(left_panel, fg_color="#FFFFFF", corner_radius=30)
         eq_frame.pack(fill="both", expand=True)
         
         eq_label = ctk.CTkLabel(
             eq_frame,
-            text="⚡ Equalized Image",
+            text="✨ Equalized Image",
             font=ctk.CTkFont(size=16, weight="bold"),
-            text_color="#000000"
+            text_color="#235789"
         )
         eq_label.pack(anchor="w", padx=15, pady=(10, 5))
         
+        # Canvas wrapper with rounded corners
+        eq_canvas_frame = ctk.CTkFrame(eq_frame, fg_color="#E8E8E8", corner_radius=30)
+        eq_canvas_frame.pack(padx=15, pady=(5, 2), fill="both", expand=True)
+        
         self.eq_canvas = ctk.CTkCanvas(
-            eq_frame,
+            eq_canvas_frame,
             width=650,
             height=280,
             bg="#E8E8E8",
             highlightthickness=0
         )
-        self.eq_canvas.pack(padx=15, pady=(5, 10), fill="both", expand=True)
+        self.eq_canvas.pack(fill="both", expand=True)
+        
+        # Button frame to ensure consistent sizing
+        eq_btn_frame = ctk.CTkFrame(eq_frame, fg_color="transparent", height=45)
+        eq_btn_frame.pack(fill="x", padx=15, pady=(5, 15))
+        eq_btn_frame.pack_propagate(False)
         
         self.show_eq_hist_btn = ctk.CTkButton(
-            eq_frame,
-            text="📊 Show Equalized Histogram",
+            eq_btn_frame,
+            text="📈 Show Equalized Histogram",
             command=self.show_equalized_histogram,
-            width=200,
-            height=32,
-            corner_radius=8,
-            fg_color="#4A9EFF",
-            hover_color="#3A8EEF"
+            width=280,
+            height=40,
+            corner_radius=30,
+            fg_color="#235789",
+            hover_color="#1A4669",
+            font=ctk.CTkFont(family="Inter", size=16, weight="bold")
         )
-        self.show_eq_hist_btn.pack(pady=(5, 15))
+        self.show_eq_hist_btn.pack(side="right", pady=2)
         
         # Right Panel - Controls
         right_panel = ctk.CTkFrame(content_frame, fg_color="transparent", width=320)
-        right_panel.pack(side="right", fill="y")
+        right_panel.pack(side="right", fill="y", expand=False)
         right_panel.pack_propagate(False)
         
         # Preprocessing Section
-        preprocess_frame = ctk.CTkFrame(right_panel, fg_color="#FFFFFF", corner_radius=12)
+        preprocess_frame = ctk.CTkFrame(right_panel, fg_color="#FFFFFF", corner_radius=30)
         preprocess_frame.pack(fill="x", pady=(0, 15))
         
         preprocess_header = ctk.CTkLabel(
             preprocess_frame,
-            text="🎛️ PREPROCESSING",
+            text="⚙️ PREPROCESSING",
             font=ctk.CTkFont(size=14, weight="bold"),
-            text_color="#000000"
+            text_color="#235789"
         )
         preprocess_header.pack(anchor="w", padx=15, pady=(15, 10))
         
@@ -180,19 +207,20 @@ class ImageClassifierApp:
             eq_row_frame,
             text="Image Equalization",
             font=ctk.CTkFont(size=13),
-            text_color="#000000"
+            text_color="#235789"
         )
         eq_label.pack(side="left")
         
         apply_btn = ctk.CTkButton(
             eq_row_frame,
-            text="Apply",
+            text="✓ Apply",
             command=self.apply_equalization,
             width=80,
-            height=32,
-            corner_radius=8,
-            fg_color="#70CFFF",
-            hover_color="#60BFEF"
+            height=35,
+            corner_radius=30,
+            fg_color="#235789",
+            hover_color="#1A4669",
+            font=ctk.CTkFont(family="Inter", size=18, weight="bold")
         )
         apply_btn.pack(side="right")
         
@@ -203,19 +231,19 @@ class ImageClassifierApp:
             text="Auto-Resize Image",
             variable=self.auto_resize_var,
             font=ctk.CTkFont(size=12),
-            text_color="#000000"
+            text_color="#235789"
         )
         auto_resize_check.pack(anchor="w", padx=15, pady=(5, 15))
         
         # K-Means Clustering Section
-        kmeans_frame = ctk.CTkFrame(right_panel, fg_color="#FFFFFF", corner_radius=12)
+        kmeans_frame = ctk.CTkFrame(right_panel, fg_color="#FFFFFF", corner_radius=30)
         kmeans_frame.pack(fill="x", pady=(0, 15))
         
         kmeans_header = ctk.CTkLabel(
             kmeans_frame,
             text="🎛️ K-MEANS CLUSTERING",
             font=ctk.CTkFont(size=14, weight="bold"),
-            text_color="#000000"
+            text_color="#235789"
         )
         kmeans_header.pack(anchor="w", padx=15, pady=(15, 10))
         
@@ -223,7 +251,7 @@ class ImageClassifierApp:
             kmeans_frame,
             text="K-value (clusters)",
             font=ctk.CTkFont(size=13),
-            text_color="#000000"
+            text_color="#235789"
         )
         k_label.pack(anchor="w", padx=15, pady=(10, 5))
         
@@ -234,7 +262,7 @@ class ImageClassifierApp:
             k_value_frame,
             text="5",
             font=ctk.CTkFont(size=14, weight="bold"),
-            text_color="#000000"
+            text_color="#235789"
         )
         self.k_value_label.pack(side="right")
         
@@ -245,9 +273,9 @@ class ImageClassifierApp:
             number_of_steps=8,
             command=self.update_k_value,
             width=260,
-            button_color="#70CFFF",
-            button_hover_color="#60BFEF",
-            progress_color="#70CFFF"
+            button_color="#235789",
+            button_hover_color="#1A4669",
+            progress_color="#235789"
         )
         self.k_slider.set(5)
         self.k_slider.pack(padx=15, pady=(0, 10))
@@ -260,25 +288,26 @@ class ImageClassifierApp:
         
         self.run_clustering_btn = ctk.CTkButton(
             kmeans_frame,
-            text="▶️ Run Clustering",
+            text="🚀 Run Clustering",
             command=self.run_clustering,
             width=260,
             height=36,
-            corner_radius=8,
-            fg_color="#70CFFF",
-            hover_color="#60BFEF"
+            corner_radius=30,
+            fg_color="#235789",
+            hover_color="#1A4669",
+            font=ctk.CTkFont(family="Inter", size=18, weight="bold")
         )
         self.run_clustering_btn.pack(padx=15, pady=(5, 15))
         
         # KNN Classification Section
-        knn_frame = ctk.CTkFrame(right_panel, fg_color="#FFFFFF", corner_radius=12)
+        knn_frame = ctk.CTkFrame(right_panel, fg_color="#FFFFFF", corner_radius=30)
         knn_frame.pack(fill="x")
         
         knn_header = ctk.CTkLabel(
             knn_frame,
-            text="👥 KNN CLASSIFICATION",
+            text="🔍 KNN CLASSIFICATION",
             font=ctk.CTkFont(size=14, weight="bold"),
-            text_color="#000000"
+            text_color="#235789"
         )
         knn_header.pack(anchor="w", padx=15, pady=(15, 10))
         
@@ -295,7 +324,7 @@ class ImageClassifierApp:
             values=["3 Neighbors", "5 Neighbors", "7 Neighbors", "9 Neighbors"],
             width=260,
             height=36,
-            corner_radius=8,
+            corner_radius=30,
             command=self.update_neighbors
         )
         self.neighbors_dropdown.set("5 Neighbors")
@@ -307,9 +336,10 @@ class ImageClassifierApp:
             command=self.classify_image,
             width=260,
             height=36,
-            corner_radius=8,
-            fg_color="#70CFFF",
-            hover_color="#60BFEF"
+            corner_radius=30,
+            fg_color="#235789",
+            hover_color="#1A4669",
+            font=ctk.CTkFont(family="Inter", size=18, weight="bold")
         )
         self.classify_btn.pack(padx=15, pady=(5, 10))
         
@@ -335,13 +365,19 @@ class ImageClassifierApp:
             self.eq_canvas.delete("all")
     
     def display_image(self, img, canvas):
-        # Resize image to fit canvas while maintaining aspect ratio
+        # Resize image to fit canvas
         h, w = img.shape[:2]
         canvas_width = canvas.winfo_width() if canvas.winfo_width() > 1 else 650
         canvas_height = canvas.winfo_height() if canvas.winfo_height() > 1 else 280
         
-        scale = min(canvas_width/w, canvas_height/h) * 0.9
-        new_w, new_h = int(w*scale), int(h*scale)
+        # If auto-resize is enabled, fill the entire frame
+        if self.auto_resize_var.get():
+            new_w = int(canvas_width * 0.95)
+            new_h = int(canvas_height * 0.95)
+        else:
+            # Maintain aspect ratio
+            scale = min(canvas_width/w, canvas_height/h) * 0.9
+            new_w, new_h = int(w*scale), int(h*scale)
         
         img_resized = cv2.resize(img, (new_w, new_h))
         img_pil = Image.fromarray(img_resized)
@@ -381,24 +417,43 @@ class ImageClassifierApp:
     def update_neighbors(self, choice):
         self.neighbors_value = int(choice.split()[0])
     
+    def toggle_auto_resize(self):
+        """Redisplay images when auto-resize is toggled"""
+        if self.original_image is not None:
+            self.display_image(self.original_image, self.orig_canvas)
+        if self.equalized_image is not None:
+            self.display_image(self.equalized_image, self.eq_canvas)
+    
     def run_clustering(self):
         if self.equalized_image is None:
             messagebox.showwarning("No Image", "Please apply equalization first!")
             return
         
-        # Use equalized image for clustering
-        img = self.equalized_image.reshape(-1, 3)
-        
-        # Apply k-means
-        kmeans = KMeans(n_clusters=self.k_value, random_state=42, n_init=10)
-        labels = kmeans.fit_predict(img)
-        
-        # Get cluster centers and reshape
-        centers = kmeans.cluster_centers_.astype(np.uint8)
-        self.clustered_image = centers[labels].reshape(self.equalized_image.shape)
-        
-        self.display_image(self.clustered_image, self.eq_canvas)
-        messagebox.showinfo("Success", f"K-means clustering completed with {self.k_value} clusters!")
+        try:
+            # Get image shape
+            h, w, c = self.equalized_image.shape
+            
+            # Reshape image to 2D array (pixels x channels)
+            img = self.equalized_image.reshape(-1, c)
+            
+            # Convert to float32 for k-means (required for sklearn)
+            img_float = img.astype(np.float32)
+            
+            # Apply k-means
+            kmeans = KMeans(n_clusters=self.k_value, random_state=42, n_init=10)
+            labels = kmeans.fit_predict(img_float)
+            
+            # Get cluster centers and map labels to centers
+            centers = kmeans.cluster_centers_
+            clustered_pixels = centers[labels]
+            
+            # Convert back to uint8 and reshape to original image shape
+            self.clustered_image = np.clip(clustered_pixels, 0, 255).astype(np.uint8).reshape(h, w, c)
+            
+            self.display_image(self.clustered_image, self.eq_canvas)
+            messagebox.showinfo("Success", f"K-means clustering completed with {self.k_value} clusters!")
+        except Exception as e:
+            messagebox.showerror("Error", f"Clustering failed: {str(e)}")
     
     def classify_image(self):
         if self.equalized_image is None:
@@ -412,7 +467,7 @@ class ImageClassifierApp:
         
         self.predicted_label.configure(
             text=f"Predicted class: {predicted}",
-            text_color="#4A9EFF",
+            text_color="#235789",
             font=ctk.CTkFont(size=14, weight="bold")
         )
         messagebox.showinfo("Classification", f"Image classified as: {predicted}\n\n(Note: This is a demo. Real classification requires trained model)")
